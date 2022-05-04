@@ -7,11 +7,13 @@
             <th>Nazwa produktu</th>
             <th>Cena</th>
             <th>Dodaj do koszyka</th>
+            <th>Usuń z koszyka</th>
           </tr>
           <tr v-for="p in products" :key="p.id">
               <td>{{ p.name }}</td>
               <td>{{ p.price }}</td>
-              <td><button @click="basket_products.push({ id: index, name: p.name, price: p.price})">Dodaj</button></td>
+              <td><button @click="p.quantity = p.quantity + 1">Dodaj</button></td>
+              <td><button @click="p.quantity = p.quantity - 1">Usuń</button></td>
           </tr>
       </table>
   </div>
@@ -21,13 +23,17 @@
           <tr>
             <th>Nazwa produktu</th>
             <th>Cena</th>
+            <th>Ilość</th>
+            <th>Razem</th>
           </tr>
-          <tr v-for="p in basket_products" :key="p.id">
+          <tr v-for="p in filteredProducts" :key="p.id">
               <td>{{ p.name }}</td>
               <td>{{ p.price }}</td>
+              <td>{{ p.quantity }}</td>
+              <td>{{ p.quantity*p.price }}</td>
           </tr>
       </table>
-      <p><button @click="basket_products.pop()">Usuń</button></p>
+      <p>Razem: </p>
   </div>
 </body>
 </template>
@@ -41,5 +47,7 @@ table, th, td {
 
 <script setup>
     import products from './data.js'
-    import basket_products from './basket.js'
+    import { computed, ref } from 'vue'
+        const filteredProducts = 
+      computed(() => products.value.filter(p => p.quantity > 0))
 </script>
